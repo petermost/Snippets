@@ -1,3 +1,5 @@
+" vim: set fileencoding=utf-8
+
 "{{{============================= File/Buffer options ============================
 set encoding=utf-8
 set nohidden
@@ -16,7 +18,7 @@ set exrc
 if has( "gui_running" )
 	if has( "gui_gtk" )
 		language messages en_AU.UTF-8 
-		set guifont=Hack\ 8,
+		set guifont=Hack\ 9,
 	elseif has( "gui_win32" )
 		language messages english
 		set guifont=Hack:h8
@@ -56,7 +58,7 @@ set cindent
 set autoindent
 set display+=uhex
 set backspace=indent,eol,start
-set listchars=eol:\¶,tab:\»\ ,extends:>,precedes:<
+set listchars=eol:\¶,tab:\»\ ,extends:\>,precedes:\<
 set showbreak=...
 set textwidth=0 "Set this value to enable text wrapping
 set cpoptions+=n "Show above characters in between line numbers
@@ -171,4 +173,3 @@ endfunction
 " exe 'write O:\DATEN\Sicherungen\Logging\' . expand( '%:t' )
 
 "}}}
-
