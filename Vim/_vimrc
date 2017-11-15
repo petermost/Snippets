@@ -15,11 +15,11 @@ set directory-=. "Don't put the swap file in the current directory.
 "{{{================================= GUI options ================================
 set exrc
 
-if has( "gui_running" )
-	if has( "gui_gtk" )
-		language messages en_AU.UTF-8 
+if has("gui_running")
+	if has("gui_gtk")
+		language messages en_AU.UTF-8
 		set guifont=Hack\ 9,
-	elseif has( "gui_win32" )
+	elseif has("gui_win32")
 		language messages english
 		set guifont=Hack:h8
 	endif
@@ -38,11 +38,12 @@ set ruler
 set showcmd
 set visualbell
 set splitright
-set mouse=a       "Enable mouse for all modes
-set guioptions-=T "Hide toolbar
+set mouse=a        "Enable mouse for all modes
+set guioptions-=T  "Hide toolbar
 set guioptions+=bh "Show horizontal scrollbar but restrict it to the current line
-set laststatus=2  "Show status line always 
-set showtabline=1 "Show tabs if more then one
+set laststatus=2   "Show status line always 
+set showtabline=1  "Show tabs if more then one
+set number         "Show line numbers
 "}}}
 
 
@@ -58,8 +59,8 @@ set cindent
 set autoindent
 set display+=uhex
 set backspace=indent,eol,start
-set listchars=eol:\¶,tab:\»\ ,extends:\>,precedes:\<
-set showbreak=...
+set listchars=eol:\↵,tab:\⇥\ ,extends:\»,precedes:\«,space:\·
+set showbreak=\↪
 set textwidth=0 "Set this value to enable text wrapping
 set cpoptions+=n "Show above characters in between line numbers
 set formatoptions+=r "Insert comment leader for [Enter]
@@ -125,7 +126,7 @@ endif
 " Set modifiable/nomodifiable depending on whether the file is readonly:
 autocmd BufReadPost * if &readonly | setlocal nomodifiable | else | setlocal modifiable | endif
 
-autocmd VimEnter * call FitWindow()
+"autocmd VimEnter * call FitWindow()
 
 "autocmd BufEnter,BufNewFile * call SetupLanguageSettings()
 autocmd FileType * call ApplyBWIChanges()
