@@ -1,0 +1,176 @@
+" vim: set fileencoding=utf-8
+
+"{{{============================= File/Buffer options ============================
+set encoding=utf-8
+set nohidden
+set autoread
+set autochdir
+set browsedir=buffer
+set directory-=. "Don't put the swap file in the current directory.
+"set noswapfile
+"}}}
+
+
+
+"{{{================================= GUI options ================================
+set exrc
+
+if has("gui_running")
+	if has("gui_gtk")
+		language messages en_AU.UTF-8
+		set guifont=Hack\ 9,
+	elseif has("gui_win32")
+		language messages english
+		set guifont=Hack:h8
+	endif
+endif
+
+set background=dark
+syntax enable
+colorscheme peter_most_minimal
+"syntax reset
+"}}}
+
+
+
+"{{{================================= UI options =================================
+set ruler
+set showcmd
+set visualbell
+set splitright
+set mouse=a        "Enable mouse for all modes
+set guioptions-=T  "Hide toolbar
+set guioptions+=bh "Show horizontal scrollbar but restrict it to the current line
+set laststatus=2   "Show status line always 
+set showtabline=1  "Show tabs if more then one
+set number         "Show line numbers
+"}}}
+
+
+
+"{{{====================== Editing/Formatting options ============================
+set nowrap
+set linebreak
+set tabstop=4
+set shiftwidth=4
+set noexpandtab
+
+set cindent
+set autoindent
+set display+=uhex
+set backspace=indent,eol,start
+set listchars=eol:\↵,tab:\⇥\ ,extends:\»,precedes:\«,space:\·
+set showbreak=\↪
+set textwidth=0 "Set this value to enable text wrapping
+set cpoptions+=n "Show above characters in between line numbers
+set formatoptions+=r "Insert comment leader for [Enter]
+set formatoptions+=o "Insert comment leader for [o] [O]
+"set formatoptions-=t "Don't auto-wrap text
+"set smarttab
+"}}}
+
+
+
+"{{{============================= Special BWI options ============================
+function ApplyBWIChanges()
+	if hostname() == "BS10083XC" && (&filetype == "java" || &filetype == "javascript" || &filetype == "html")
+		setlocal tabstop=8
+		setlocal shiftwidth=4
+		setlocal expandtab
+	endif
+endfunction
+"}}}
+
+
+
+"{{{============================== Folding options ===============================
+set foldopen-=hor
+set foldmethod=marker
+set foldcolumn=1     "Fold columns width
+set foldlevelstart=0 "Start with closed folds
+"}}}
+
+
+
+"{{{=============================== Search options ===============================
+set nomagic
+set hlsearch
+set incsearch
+set smartcase
+set ignorecase
+set nowrapscan
+"}}}
+
+
+
+"{{{================================ Tools options ===============================
+set tags+=tags;/
+
+if has( "cscope" )
+	"set csverb
+	let cscope_path = findfile( "cscope.out", ".;" )
+	if ( !empty( cscope_path ))
+		execute "cscope add" cscope_path
+	endif
+endif
+"}}}
+
+
+
+"{{{================================== Scripts ===================================
+
+" Open for each newly added buffer a tab page:
+"autocmd BufAdd * tabnew
+"autocmd BufAdd,BufNewFile * nested tab sball
+
+" Set modifiable/nomodifiable depending on whether the file is readonly:
+autocmd BufReadPost * if &readonly | setlocal nomodifiable | else | setlocal modifiable | endif
+
+"autocmd VimEnter * call FitWindow()
+
+"autocmd BufEnter,BufNewFile * call SetupLanguageSettings()
+autocmd FileType * call ApplyBWIChanges()
+
+
+function DeleteDuplicates()
+	s/\v^(.*)\n\1/\1/
+endfunction
+
+
+	
+" Can be used for g/texttofind/[c|l]addexpr GetFileLine()
+function GetFileLine()
+	return expand( "%" ) . ":" . line( "." ) . ":" . getline( "." )
+endfunction
+
+
+" Adapt the window size to the file content:
+function FitWindow()
+	if has( "gui_running" )
+
+		" Prevent the window from beeing to small:
+		let lastLine = line( "$" )
+		if lastLine < 50 | let lastLine = 50 | endif
+
+		let lastColumn = col( "$" )
+		if lastColumn < 120 | let lastColumn = 120 | endif
+
+		if has( "gui_gtk" )
+
+			" Prevent the window from beeing to large for the desktop:
+			if lastLine > 63 | let lastLine = 63 | endif
+			if lastColumn > 178 | let lastColumn = 178 | endif
+		endif
+		"if &lines + &cmdheight < lastLine | let &lines = lastLine + &cmdheight + 1 | endif
+		"if &columns < lastColumn | let &columns = lastColumn | endif
+		let &lines = lastLine + &cmdheight + 1
+		let &columns = lastColumn
+	endif
+endfunction
+
+"{{{=================================== Notes ====================================
+
+" Saving buffers to different directories (after vim received file via sendto)
+" exe 'write O:\DATEN\Sicherungen\Logging\' . expand( '%:t' )
+
+"}}}
